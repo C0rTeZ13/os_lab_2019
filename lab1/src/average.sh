@@ -1,7 +1,7 @@
 #!/bin/bash
 
-for var in "$@"; do
-    sum=$(( $sum + $var ))
+while read arg; do
+    sum=$(( $sum + $arg ))
     count=$(( $count + 1 ))
 done
 average=$(( $sum / $count ))
