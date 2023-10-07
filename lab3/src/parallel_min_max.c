@@ -15,11 +15,21 @@
 #include "find_min_max.h"
 #include "utils.h"
 
+pid_t *child_pids;
+int pnum = -1;
+  void alarm_handler(int sig) {
+  for (int i = 0; i < pnum; i++) {
+    kill(child_pids[i], SIGKILL);
+  }
+}
+
 int main(int argc, char **argv) {
+  signal(SIGALRM, alarm_handler);
   int seed = -1;
   int array_size = -1;
-  int pnum = -1;
+  //int pnum = -1;
   bool with_files = false;
+  int timeout = -1;
 
   while (true) {
     int current_optind = optind ? optind : 1;
@@ -27,6 +37,7 @@ int main(int argc, char **argv) {
     static struct option options[] = {{"seed", required_argument, 0, 0},
                                       {"array_size", required_argument, 0, 0},
                                       {"pnum", required_argument, 0, 0},
+                                      {"timeout", required_argument, 0, 0},
                                       {"by_files", no_argument, 0, 'f'},
                                       {0, 0, 0, 0}};
 
@@ -69,14 +80,22 @@ int main(int argc, char **argv) {
             with_files = true;
             break;
 
+          case 4:
+            timeout = atoi(optarg);
+            if (timeout <= 0) {
+              printf("timeout time is a positive number");
+              return 1;
+            }
+            break;
           defalut:
             printf("Index %d is out of options\n", option_index);
         }
         break;
+        
       case 'f':
         with_files = true;
         break;
-
+      
       case '?':
         break;
 
@@ -103,6 +122,7 @@ int main(int argc, char **argv) {
   struct timeval start_time;
   gettimeofday(&start_time, NULL);
 
+  child_pids = malloc(sizeof(pid_t) * pnum);
   FILE *child_file; // my_file
   child_file = fopen("tempfile.txt", "w");
   int pipefd[2];
@@ -130,13 +150,20 @@ int main(int argc, char **argv) {
         }
         return 0;
       }
-
+      else {
+        child_pids[i] = child_pid;
+      }
+    if (timeout > 0) {
+      alarm(timeout);
+      sleep(timeout);
+    }
     } else {
       printf("Fork failed!\n");
       return 1;
     }
   }
   fclose(child_file);
+
   while (active_child_processes > 0) {
     // your code here
     wait(NULL);
