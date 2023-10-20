@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-I. # для подключения библиотек
 
-objects = fact deadlock
+objects = fact deadlock mutex
 
 all: $(objects)
 
@@ -13,6 +13,9 @@ deadlock:
 
 utils.o : ../../lab3/src/utils.h
 	$(CC) -o utils.o -c ../../lab3/src/utils.c $(CFLAGS)
+
+mutex :
+	$(CC) -o mutex mutex.c -pthread $(CFALGS)
 
 clean :
 	rm utils.o fact deadlock mutex
