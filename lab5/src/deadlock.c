@@ -13,7 +13,7 @@ void *resource1(){
 
     printf("Trying to get resource2\n");
     pthread_mutex_lock(&lock2); 
-    printf("Aquired resourc2\n");
+    printf("Aquired resource2\n");
     pthread_mutex_unlock(&lock2);
 
     printf("Job finished in resource1..\n");
@@ -33,7 +33,7 @@ void *resource2(){
 
     printf("Trying to get resource1\n");
     pthread_mutex_lock(&lock1); 
-    printf("Aquired resourc1\n");
+    printf("Aquired resource1\n");
     pthread_mutex_unlock(&lock1);
 
     printf("Job finished in resource2..\n");

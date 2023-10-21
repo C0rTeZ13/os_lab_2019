@@ -77,15 +77,14 @@ int main(int argc, char **argv) {
             // error handling
             break;
           case 3:
-            with_files = true;
-            break;
-
-          case 4:
             timeout = atoi(optarg);
             if (timeout <= 0) {
               printf("timeout is a positive number");
               return 1;
             }
+            break;
+          case 4:
+            with_files = true;
             break;
           defalut:
             printf("Index %d is out of options\n", option_index);
