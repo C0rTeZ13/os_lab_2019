@@ -6,10 +6,10 @@ objects = server client start_servers
 all: $(objects)
 
 server : server.o
-	$(CC) server.o -Lbin/static -lmult -o server -pthread $(CFLAGS)
+	$(CC) server.o -Lbin -lmult -o server -pthread $(CFLAGS)
 
 client: client.o
-	$(CC) client.o -Lbin/static -lmult -o client -pthread $(CFALGS)
+	$(CC) client.o -Lbin -lmult -o client -pthread $(CFALGS)
 
 start_servers:
 	./server --port 20001 --tnum 5 &
