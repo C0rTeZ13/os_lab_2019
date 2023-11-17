@@ -105,7 +105,6 @@ int main(int argc, char **argv) {
   memcpy(to[0].ip, "127.0.0.1", sizeof("127.0.0.1"));
   to[1].port = 20002;
   memcpy(to[1].ip, "127.0.0.1", sizeof("127.0.0.1"));
-
   // TODO: work continiously, rewrite to make parallel
 
   int active_child_processes = 0;
